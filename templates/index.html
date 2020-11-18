@@ -5,12 +5,59 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Lori Book</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
     </head>
 
     <body>
         <div id="vm">
             <p>{{greeting}}</p>
-            <p>[[greeting]]</p>
+            <div class="books" v-if="showForm">
+                <h2>Books</h2>
+                <button @click="addBook()">
+                    Add Book
+                </button>
+                <form action="" method="post" @submit.prevent="getCharges" v-if="books.length > 0">
+                    <div class="row" v-for="(book, index) in books">
+                        <div class="three columns">
+                            <label>Borrow Date</label>
+                            <input type="date" class="u-full-width" v-model="book.borrow_date">
+                        </div>
+                        <div class="three columns">
+                            <label>Return Date</label>
+                            <input class="u-full-width" type="date" v-model="book.return_date">
+                        </div>
+
+                    </div>
+                    <button type="submit">Get Charges</button>
+                </form>
+            </div>
+            <div class="content" v-if="!showForm && charges.length > 0">
+                <h2>Charges</h2>
+                <button @click="resetBooks()">
+                    Reset Books
+                </button>
+
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Borrow Date</th>
+                            <th>Return Date</th>
+                            <th>Days Elapsed</th>
+                            <th>Charges</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(charge, index) in charges">
+                            <td>[[charge.book_id]]</td>
+                            <td>[[charge.borrow_date]]</td>
+                            <td>[[charge.return_date]]</td>
+                            <td>[[charge.days]]</td>
+                            <td>$ [[charge.charges]]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="{{ url_for('static', filename='index.js') }}"></script>
