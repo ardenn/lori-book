@@ -16,6 +16,7 @@ class Book(BaseModel):
 
     @property
     def days(self):
+        "Get the days elapsed between borrow and return dates"
         elapsed = self.return_date - self.borrow_date
         return elapsed.days
 
