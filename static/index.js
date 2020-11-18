@@ -18,7 +18,7 @@ const vm = new Vue({
             this.charges = []
         },
         getCharges: async function () {
-            const response = await fetch("http://127.0.0.1:5000/charges", {
+            const response = await fetch("/charges", {
                 method: "POST", headers: {
                     'Content-Type': 'application/json'
                 },
