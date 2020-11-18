@@ -1,3 +1,5 @@
+# This module servers as the data repository for this project.
+# A DB backend would be more appropriate in production.
 import uuid
 from datetime import date
 from pydantic import BaseModel
