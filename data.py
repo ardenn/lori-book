@@ -1,18 +1,28 @@
 import uuid
-from datetime import datetime, timedelta, timezone, date
+from datetime import date
 from pydantic import BaseModel
+
+BOOK_TYPES = {
+    "REGULAR": {"charge": 1.5},
+    "FICTION": {"charge": 3},
+    "NOVEL": {"charge": 1.5},
+}
 
 
 class Book(BaseModel):
-    book_id: uuid.UUID = uuid.uuid4()
-    borrow_date: date = datetime.now(timezone.utc)
-    return_date: date = datetime.now(timezone.utc) + timedelta(hours=1)
+    borrow_date: date = date.today()
+    return_date: date = date.today()
+    book_type: str = "REGULAR"
 
     def __repr__(self):
         return str(self.book_id)
 
     def __str__(self):
         return str(self.book_id)
+
+    @property
+    def book_id(self):
+        return uuid.uuid4()
 
     @property
     def days(self):
@@ -22,15 +32,18 @@ class Book(BaseModel):
 
     @property
     def charges1(self):
-        if self.days <= 0:
-            return 1
         return self.days
+
+    @property
+    def charges2(self):
+        return BOOK_TYPES[self.book_type]["charge"] * self.days
 
     def to_dict(self):
         return {
             "book_id": str(self.book_id),
+            "book_type": self.book_type,
             "borrow_date": self.borrow_date.isoformat(),
             "return_date": self.return_date.isoformat(),
-            "charges": self.charges1,
+            "charges": self.charges2,
             "days": self.days,
         }

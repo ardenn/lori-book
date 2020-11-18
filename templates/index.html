@@ -19,6 +19,14 @@
                 <form action="" method="post" @submit.prevent="getCharges" v-if="books.length > 0">
                     <div class="row" v-for="(book, index) in books">
                         <div class="three columns">
+                            <label>Book Type</label>
+                            <select class="u-full-width" v-model="book.book_type">
+                                {% for t in book_types %}
+                                <option value="{{t}}">{{t}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="three columns">
                             <label>Borrow Date</label>
                             <input type="date" class="u-full-width" v-model="book.borrow_date">
                         </div>
@@ -41,6 +49,7 @@
                     <thead>
                         <tr>
                             <th>Book</th>
+                            <th>Book Type</th>
                             <th>Borrow Date</th>
                             <th>Return Date</th>
                             <th>Days Elapsed</th>
@@ -50,6 +59,7 @@
                     <tbody>
                         <tr v-for="(charge, index) in charges">
                             <td>[[charge.book_id]]</td>
+                            <td>[[charge.book_type]]</td>
                             <td>[[charge.borrow_date]]</td>
                             <td>[[charge.return_date]]</td>
                             <td>[[charge.days]]</td>
